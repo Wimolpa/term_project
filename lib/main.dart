@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:term_project/pages/homepage.dart';
-import 'package:term_project/pages/homepage1.dart';
 import 'package:term_project/pages/loginpage.dart';
 
 void main() {

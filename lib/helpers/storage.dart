@@ -3,7 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class Storage {
   static const keyToken = 'token';
   static const keyFullName = 'fullName';
-
+  static const keyId = 'id';
   final storage = FlutterSecureStorage();
 
   Future<String?> read(String key) async {

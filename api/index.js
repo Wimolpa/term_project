@@ -80,12 +80,12 @@ app.get('/comment', function (req, res) {
     res.send(mockUser);
 });
 app.post('/comment', function (req, res) {
-    const {id,comment} = req.body;
-    const cid = mockUser[id].comment.length + 1;
-    if(comment === ''){
+    const {id,pid,content} = req.body;
+    const cid = mockUser[id-1].comment.length + 1;
+    if(content === ''){
         res.status(401).send({err:'Unauthorized'});
     }else{
-        mockUser[id-1].comment.push({cid,comment});
+        mockUser[id-1].comment.push({cid,pid,content});
         res.send({mockUser});
     }
     

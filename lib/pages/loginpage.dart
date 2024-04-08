@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:term_project/helpers/api_caller.dart';
+import 'package:term_project/helpers/my_text_fild.dart';
 import 'package:term_project/helpers/storage.dart';
 import 'package:term_project/pages/homepage.dart';
-import 'package:term_project/pages/homepage1.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,16 +12,15 @@ class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
+
 class _LoginPageState extends State<LoginPage> {
   var _usernameController = TextEditingController();
   var _passwordController = TextEditingController();
 
-  
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue[100],
       body: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 20.0,
@@ -30,23 +29,18 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.security, size: 80.0),
-            Text('LOGIN', style: Theme.of(context).textTheme.titleLarge),
+            Text('รีวิวเว่อ', style: TextStyle(fontSize: 40.0)),
+            Text('LOGIN', style: TextStyle(fontSize: 15.0)),
+            // Text('LOGIN', style: Theme.of(context).textTheme.titleSmall),
             SizedBox(height: 20.0),
-            TextField(
+            MyTextField(
               controller: _usernameController,
-              decoration: InputDecoration(
-                hintText: 'Enter username',
-                border: OutlineInputBorder(),
-              ),
+              hintText: 'Enter username',
             ),
             SizedBox(height: 20.0),
-            TextField(
+            MyTextField(
               controller: _passwordController,
-              decoration: InputDecoration(
-                hintText: 'Enter password',
-                border: OutlineInputBorder(),
-              ),
+              hintText: 'Enter password',
             ),
             SizedBox(height: 20.0),
             ElevatedButton(
@@ -64,22 +58,27 @@ class _LoginPageState extends State<LoginPage> {
                 debugPrint(data);
 
                 var json = jsonDecode(data);
-                var err = json['error'];
-                if (err == 'Unauthorized') {
-                  print('error: $err');
+
+                if (json['error'] == 'Unauthorized') {
+                  print(json['error']);
                 } else {
+                  print("THIS IS ELSE");
                   var token = json['token'];
                   var fullName = json['user']['fullName'];
-                  debugPrint('Token: $token, Full Name: $fullName');
+                  var id = json['user']['id'];
+                  var storage = Storage();
+                  await storage.write(
+                    Storage.keyId,
+                    json['user']['id'].toString(),
+                  );
 
-                  // var storage = Storage();
-                  // storage.write(Storage.keyToken, token);
-                  // storage.write(Storage.keyFullName, fullName);
+                  debugPrint('ID: $id,Token: $token, Full Name: $fullName');
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return HomePage1();
+                        return HomePage();
                       },
                     ),
                   );
@@ -87,10 +86,9 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: SizedBox(
                 width: double.infinity,
-                child: Text(
-                  'Login',
-                  textAlign: TextAlign.center,
-                ),
+                child: Text('Login',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.blue[700])),
               ),
             )
           ],
