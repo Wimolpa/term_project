@@ -131,22 +131,7 @@ class _HomePageState extends State<HomePage> {
                       }));
                     },
                     icon: Icon(Icons.logout)),
-            // ElevatedButton(
-            //   onPressed: () {
-            // Navigator.push(context, MaterialPageRoute(builder: (context) {
-            //   return Additem();
-            // }));
-            //   },
-            //   child: SizedBox(child: Icon(Icons.logout)),
-            //   style: ButtonStyle(
-            //     backgroundColor: MaterialStateProperty.all<Color>(
-            //       Color(0xFFafbfff),
-            //     ),
-            //     fixedSize: MaterialStateProperty.all<Size>(
-            //       const Size(30, 30),
-            //     ),
-            //   ),
-            // ),
+            
           ]),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())

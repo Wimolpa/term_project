@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                 if (json['error'] == 'Unauthorized') {
                   print(json['error']);
                 } else {
-                  print("THIS IS ELSE");
+                  // print("THIS IS ELSE");
                   var token = json['token'];
                   var fullName = json['user']['fullName'];
                   var id = json['user']['id'];
