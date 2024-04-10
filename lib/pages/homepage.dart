@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:term_project/helpers/api_caller.dart';
 import 'package:term_project/helpers/dialog_utils.dart';
 import 'package:term_project/helpers/my_text_fild.dart';
+import 'package:term_project/helpers/search.dart';
 import 'package:term_project/models/additem_models.dart';
 import 'package:term_project/models/todo_items.dart';
 import 'package:term_project/pages/additem.dart';
@@ -23,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   List<additem> _additem = [];
   bool _isLoading = true;
   bool _isLoading1 = true;
+
   @override
   void initState() {
     super.initState();
@@ -53,12 +55,12 @@ class _HomePageState extends State<HomePage> {
       // print(data);
       // ข้อมูลที่ได้จาก API นี้จะเป็น JSON array ดังนั้นต้องใช้ List รับค่าจาก jsonDecode()
       List list = jsonDecode(data);
-      print('done2');
-      print('done2');
+      // print('done2');
+      // print('done2');
       setState(() {
         _additem = list.map((e) => additem.fromJson(e)).toList();
         _isLoading = false;
-        print('done3');
+        // print('done3');
       });
     } on Exception catch (e) {
       showOkDialog(context: context, title: "Error", message: e.toString());
@@ -82,7 +84,7 @@ class _HomePageState extends State<HomePage> {
         );
       }
     }
-    print('done1');
+    // print('done1');
     _loadTodoItems1();
   }
 
@@ -101,9 +103,61 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  MyTextField(
-                    controller: _titleTextController,
-                    hintText: 'ชื่อสินค้า*',
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 5,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Color(0xFFf5f5f5),
+                            prefixIcon: Icon(Icons.search),
+                            contentPadding: const EdgeInsets.only(
+                              left: 16.0,
+                              bottom: 12.0,
+                              top: 12.0,
+                            ),
+                            hintText: 'ชื่อสินค้า*',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                              borderSide: const BorderSide(color: Colors.white),
+                            ),
+                          ),
+                          onChanged: searchList,
+                        ),
+                      ),
+                      SizedBox(width: 10.0),
+                      Expanded(
+                        flex: 1,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return Additem();
+                            }));
+                          },
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Text(
+                              'add',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    color: Colors.grey[800], fontSize: 13.0),
+                              ),
+                            ),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              Colors.white,
+                            ),
+                            fixedSize: MaterialStateProperty.all<Size>(
+                              const Size(100, 50),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 16),
                   Expanded(
@@ -114,6 +168,7 @@ class _HomePageState extends State<HomePage> {
                         // debugPrint(_todoItems.products!.length.toString());
                         //debugPrint(item.itemname!.toString());
                         return Card(
+                          color: Colors.white,
                           child: ListTile(
                             title: Text(item.itemname!,
                                 style: GoogleFonts.poppins()),
@@ -147,23 +202,39 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const SizedBox(height: 24.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return Additem();
-                      }));
-                    },
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Text('เพิ่มสินค้า',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.blue[700])),
-                    ),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     Navigator.push(context,
+                  //         MaterialPageRoute(builder: (context) {
+                  //       return Additem();
+                  //     }));
+                  //   },
+                  //   child: SizedBox(
+                  //     width: double.infinity,
+                  //     child: Text('เพิ่มสินค้า',
+                  //         textAlign: TextAlign.center,
+                  //         style: TextStyle(color: Colors.blue[700])),
+                  //   ),
+                  //   style: ButtonStyle(
+                  //     backgroundColor: MaterialStateProperty.all<Color>(
+                  //       Colors.white,
+                  //     )
+                  //   ),
+                  // ),
                 ],
               ),
             ),
     );
+  }
+
+  void searchList(String query) {
+    final suggestions = _additem.where((item) {
+      final itemTitle = item.itemname!.toLowerCase();
+      final input = query.toLowerCase();
+
+      return itemTitle.contains(input);
+    }).toList();
+
+    setState(() => _additem = suggestions);
   }
 }

@@ -90,6 +90,11 @@ class _LoginPageState extends State<LoginPage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.blue[700])),
               ),
+              style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                        Color(0xFFf5f5f5),
+                      )
+                    ),
             )
           ],
         ),

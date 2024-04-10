@@ -34,49 +34,68 @@ class _AdditemState extends State<Additem> {
         child: Column(
           //  mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("เพิ่มรายการสินค้า",style: TextStyle(fontSize: 20.0),),
+            Text(
+              "เพิ่มรายการสินค้า",
+              style: TextStyle(fontSize: 20.0),
+            ),
             SizedBox(height: 20.0),
-            Container(
-              color: Colors.white,
-              child: TextField(
-                controller: _titleController,
-                decoration: InputDecoration(
-                  hintText: 'ชื่อสินค้า',
-                  border: OutlineInputBorder(),
+            TextField(
+              controller: _titleController,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFFf5f5f5),
+                contentPadding: const EdgeInsets.only(
+                  left: 16.0,
+                  bottom: 12.0,
+                  top: 12.0,
                 ),
+                hintText: 'ชื่อสินค้า*',
+                border: OutlineInputBorder(),
               ),
             ),
             SizedBox(height: 20.0),
-            Container(
-              color: Colors.white,
-              child: TextField(
-                controller: _desController,
-                decoration: InputDecoration(
-                  hintText: 'คำอธิบายสินค้า',
-                  border: OutlineInputBorder(),
+            TextField(
+              controller: _desController,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFFf5f5f5),
+                contentPadding: const EdgeInsets.only(
+                  left: 16.0,
+                  bottom: 12.0,
+                  top: 12.0,
                 ),
+                hintText: 'คำอธิบายสินค้า*',
+                border: OutlineInputBorder(),
               ),
             ),
             SizedBox(height: 20.0),
-            Container(
-              color: Colors.white,
-              child: TextField(
-                controller: _piceController,
-                decoration: InputDecoration(
-                  hintText: 'ราคา',
-                  border: OutlineInputBorder(),
+            TextField(
+              controller: _piceController,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFFf5f5f5),
+                contentPadding: const EdgeInsets.only(
+                  left: 16.0,
+                  bottom: 12.0,
+                  top: 12.0,
                 ),
+                hintText: 'ราคา*',
+                border: OutlineInputBorder(),
               ),
             ),
             SizedBox(height: 20.0),
-            Container(
-              color: Colors.white,
-              child: TextField(
-                controller: _imageController,
-                decoration: InputDecoration(
-                  hintText: 'URL ภาพสินค้า',
-                  border: OutlineInputBorder(),
+            TextField(
+              controller: _imageController,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(0xFFf5f5f5),
+                contentPadding: const EdgeInsets.only(
+                  left: 16.0,
+                  bottom: 12.0,
+                  top: 12.0,
                 ),
+                hintText: 'URL ภาพสินค้า*',
+                border: OutlineInputBorder(),
               ),
             ),
             SizedBox(height: 20.0),
@@ -98,7 +117,7 @@ class _AdditemState extends State<Additem> {
                   },
                 );
                 // debugPrint(data);
-        
+
                 if (_titleController.text.length == '' ||
                     _piceController.text == '' ||
                     _imageController.text == '') {
@@ -120,6 +139,10 @@ class _AdditemState extends State<Additem> {
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.blue[700])),
               ),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                Colors.white,
+              )),
             )
           ],
         ),
