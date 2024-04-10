@@ -5,11 +5,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:term_project/helpers/api_caller.dart';
 import 'package:term_project/helpers/dialog_utils.dart';
 import 'package:term_project/helpers/my_text_fild.dart';
-import 'package:term_project/helpers/search.dart';
 import 'package:term_project/models/additem_models.dart';
 import 'package:term_project/models/todo_items.dart';
 import 'package:term_project/pages/additem.dart';
+import 'package:term_project/pages/loginpage.dart';
 import 'package:term_project/pages/reviewpage.dart';
+
+import '../helpers/storage.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -24,13 +26,27 @@ class _HomePageState extends State<HomePage> {
   List<additem> _additem = [];
   bool _isLoading = true;
   bool _isLoading1 = true;
-
+  bool _isLogin = true;
   @override
   void initState() {
     super.initState();
     _loadTodoItems();
+    checkLogin();
     // _getItem();
     // _loadTodoItems1();
+  }
+
+  Future<void> checkLogin() async {
+    var token = await Storage().read(Storage.keyToken);
+    var id = await Storage().read(Storage.keyId);
+    print("TEST" + token.toString());
+    setState(() {
+      if (token == null) {
+        _isLogin = true;
+      } else {
+        _isLogin = false;
+      }
+    });
   }
 
   Future<void> _loadTodoItems() async {
@@ -88,6 +104,10 @@ class _HomePageState extends State<HomePage> {
     _loadTodoItems1();
   }
 
+  Future<void> deleteAll() async {
+    await Storage().deleteAll();
+  }
+
   @override
   Widget build(BuildContext context) {
     // var textTheme = Theme.of(context).textTheme;
@@ -95,7 +115,39 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.blue[50],
       appBar: AppBar(
-          title: const Text('รายการสินค้า'), backgroundColor: Colors.blue[200]),
+          title: const Text('รายการสินค้า'),
+          backgroundColor: Colors.blue[200],
+          actions: [
+            _isLogin
+                ? Container()
+                : IconButton(
+                    onPressed: () {
+                      setState(() {
+                        deleteAll();
+                      });
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return LoginPage();
+                      }));
+                    },
+                    icon: Icon(Icons.logout)),
+            // ElevatedButton(
+            //   onPressed: () {
+            // Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //   return Additem();
+            // }));
+            //   },
+            //   child: SizedBox(child: Icon(Icons.logout)),
+            //   style: ButtonStyle(
+            //     backgroundColor: MaterialStateProperty.all<Color>(
+            //       Color(0xFFafbfff),
+            //     ),
+            //     fixedSize: MaterialStateProperty.all<Size>(
+            //       const Size(30, 30),
+            //     ),
+            //   ),
+            // ),
+          ]),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : Padding(
@@ -152,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                               Colors.white,
                             ),
                             fixedSize: MaterialStateProperty.all<Size>(
-                              const Size(100, 50),
+                              const Size(100, 45),
                             ),
                           ),
                         ),
@@ -202,25 +254,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const SizedBox(height: 24.0),
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     Navigator.push(context,
-                  //         MaterialPageRoute(builder: (context) {
-                  //       return Additem();
-                  //     }));
-                  //   },
-                  //   child: SizedBox(
-                  //     width: double.infinity,
-                  //     child: Text('เพิ่มสินค้า',
-                  //         textAlign: TextAlign.center,
-                  //         style: TextStyle(color: Colors.blue[700])),
-                  //   ),
-                  //   style: ButtonStyle(
-                  //     backgroundColor: MaterialStateProperty.all<Color>(
-                  //       Colors.white,
-                  //     )
-                  //   ),
-                  // ),
                 ],
               ),
             ),

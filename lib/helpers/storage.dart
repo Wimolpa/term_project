@@ -13,4 +13,8 @@ class Storage {
   Future<void> write(String key, String value) async {
     await storage.write(key: key, value: value);
   }
+
+  Future<void> deleteAll() async {
+    await storage.deleteAll();
+  }
 }

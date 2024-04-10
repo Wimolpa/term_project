@@ -18,6 +18,25 @@ class _LoginPageState extends State<LoginPage> {
   var _passwordController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    checkToken().then((value) {
+      if (value == true) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      }
+    });
+  }
+
+  Future<bool> checkToken() async {
+    var token = await Storage().read(Storage.keyToken);
+    // debugPrint('Token: $token');
+    return token != null;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue[100],
@@ -74,6 +93,9 @@ class _LoginPageState extends State<LoginPage> {
 
                   debugPrint('ID: $id,Token: $token, Full Name: $fullName');
 
+                  await storage.write(Storage.keyToken, token.toString());
+                  await storage.write(Storage.keyFullName, fullName.toString());
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -91,10 +113,9 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(color: Colors.blue[700])),
               ),
               style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        Color(0xFFf5f5f5),
-                      )
-                    ),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                Color(0xFFf5f5f5),
+              )),
             )
           ],
         ),
